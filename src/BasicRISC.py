@@ -10,9 +10,9 @@ from UniversalComponents import FltFU, IntFU, RISC_Instr
 
 
 class StageFetch:
-    '''
+    """
     @summary: Fetch stage of the RISC pipeline
-    '''
+    """
 
     def __init__ (self, parent, decode):
         self.parent = parent
@@ -31,9 +31,9 @@ class StageFetch:
 
 
 class StageDecode:
-    '''
+    """
     @summary: Decode stage of the RISC pipeline
-    '''
+    """
 
     def __init__ (self, parent, execute):
         self.parent = parent
@@ -63,9 +63,9 @@ class StageDecode:
 
 
 class StageExecute:
-    '''
+    """
     @summary: Execute stage of the RISC pipeline
-    '''
+    """
 
     def __init__ (self, memory, fetch):
         self.memory = memory
@@ -126,9 +126,9 @@ class StageExecute:
 
 
 class StageMemory:
-    '''
+    """
     @summary: Memory stage of the RISC pipeline
-    '''
+    """
 
     def __init__ (self, write, ram):
         self.write = write
@@ -163,9 +163,9 @@ class StageMemory:
 
 
 class StageWrite:
-    '''
+    """
     @summary: Write stage of the RISC pipeline
-    '''
+    """
 
     def __init__ (self):
         self.IR = copy(Globals.INIT_INSTR)
@@ -190,9 +190,9 @@ class StageWrite:
 
 
 class RISCPipe:
-    '''
+    """
     @summary: A simple, unforwarded, RISC pipe
-    '''
+    """
 
     def __init__ (self, Rn, ram):
         self.Rn = Rn
@@ -207,14 +207,14 @@ class RISCPipe:
         self.stages['e'].fetch = self.stages['f']
 
     def tick (self):
-        '''
+        """
         @summary: This function will simulate one tick of the clock cycle. Work will be done
             "backwards", starting with the write stage and moving toward fetch, otherwise
             the current status of each stage would be lost as we moved forward
 
         @param instr: Type must be RISC_Instr and should represent the next instruction
             for the pipe to execute
-        '''
+        """
 
         # Give a tick to write, memory and execute - these can not be stalled
         # because the basic RISC has only RAW and only decode does register reads
@@ -270,10 +270,10 @@ class RISCPipe:
             self.stages['w'].outputBuf["Dest"].setVal(self.stages['w'].outputBuf["Value"])
 
     def stall (self):
-        '''
+        """
         @summary: Return a boolean description for whether or not the pipe should insert
                 a stall after decode
-        '''
+        """
         dependInstr = copy(self.stages['d'].IR)
         if Globals.DEBUG:
             print "\tSTALL CHECK"
@@ -317,11 +317,11 @@ class RISCPipe:
         return False
 
     def done (self):
-        '''
+        """
         @summary: Determine if algorithm has completed runtime
 
         @return: Returns 0 upon success (complete) or 1 for failure (incomplete)
-        '''
+        """
 
         for stage in self.stages:
             if 'f' != stage and "nop" != self.stages[stage].IR.instr:
@@ -331,10 +331,10 @@ class RISCPipe:
 
 
 class BasicRISC:
-    '''
+    """
     @summary: A basic, unforwarded, RISC datapath architecture capable of simulating
         simple instruction execution
-    '''
+    """
 
     def __init__ (self, ram):
         self.RAM = ram
@@ -342,18 +342,18 @@ class BasicRISC:
         self.pipe = RISCPipe(self.Rn, self.RAM)
 
     def load (self):
-        '''
+        """
         @summary: Load all stages with the initial instruction (nop)
-        '''
+        """
         for stage in self.pipe.stages:
             if 'f' is not stage:
                 self.pipe.stages[stage].IR = copy(Globals.INIT_INSTR)
 
     def tick (self):
-        '''
+        """
         @summary: This function will simulate one tick of the clock cycle and can be
                 continuously called to simulate a running processor
-        '''
+        """
         self.pipe.tick()
 
     def done (self):

@@ -1,8 +1,8 @@
-'''
+"""
 @author: David Zemon
 
 @summary: Provide necessary components to create a scoreboard type pipeline
-'''
+"""
 
 from copy import deepcopy, copy
 import Globals
@@ -10,9 +10,9 @@ from UniversalComponents import FltFU, IntFU
 
 
 class ScoreboardPipe:
-    '''
+    """
     @summary: Contains the read ops, execute, and write stages of a pipe utilizing a scoreboard
-    '''
+    """
 
     def __init__ (self, Rn, ram, FUs):
         self.Rn = Rn
@@ -65,9 +65,9 @@ class ScoreboardPipe:
                 self.stage = None
 
     def readOpsCheck (self):
-        '''
+        """
         @summary: Are all source operands availabe for reading?
-        '''
+        """
         raise Exception("Need to implement ScoreboardPipe.readOpsCheck()")
 
     def getSrcValues (self):
@@ -94,9 +94,9 @@ class ScoreboardPipe:
 
 
 class ScoreboardRISC:
-    '''
+    """
     @summary: A simple example of a RISC pipeline using the scoreboard technique
-    '''
+    """
 
     def __init__ (self, ram):
         self.RAM = ram
@@ -122,11 +122,11 @@ class ScoreboardRISC:
             self.PC += 1
 
     def checkIssue (self, instr):
-        '''
+        """
         @summary: Instruction may issue IFF there are no WAW, or structural hazards
 
         @return: Returns True if the instruction can issue, false otherwise
-        '''
+        """
 
         # Check for WAW
         # If the instruction doesn't write, there can be no WAW

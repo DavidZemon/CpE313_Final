@@ -1,27 +1,27 @@
-'''
+"""
 @author: David Zemon
 
 @summary: Provide datapath components common to all RISC machines, regardless of
         optimization level
-'''
+"""
 
 from copy import copy
 import Globals
 
 
 class FuncUnit:
-    '''
+    """
     @summary: Parent class for all functional units; Values are calculated and then stored
             in an output buffer known as "output" in the __init__ parameters
-    '''
+    """
 
     def __init__ (self, output):
-        '''
+        """
         @summary: Create a new functional unit and store values in the output dictionary
 
         @param output: dict consisting of {"A": ..., "B": ...}; See individual implementations
                     for what A and B are used for
-        '''
+        """
         self.delay = None;
         self.ops = []
         self.output = output
@@ -139,7 +139,7 @@ class FltFU(FuncUnit):
 
 
 class RISC_Instr(object):
-    '''
+    """
     @summary: Container for RISC-like instruction & operands
 
     Available instructions:
@@ -149,7 +149,7 @@ class RISC_Instr(object):
         - shl, shr
         - mov
         - sjmp, ljmp, jz, djnz
-    '''
+    """
 
     def __init__ (self, Rn, instr, ops = []):
         # Save the register file
@@ -187,12 +187,12 @@ class RISC_Instr(object):
         return len(self.ops)
 
     def getFU (self, FUs):
-        '''
+        """
         @summary: If 'F' exists anywhere in the operands of an instruction, it is a floating
                 point instruction and the floating point functional unit should be returned;
                 This can be modified later to differentiate between more FUs like shift FUs,
                 register move FUs, etc
-        '''
+        """
 
         for op in self.ops:
             if 'F' in op.op:
@@ -201,9 +201,9 @@ class RISC_Instr(object):
         return FUs["INT"]
 
     def writeResult (self):
-        '''
+        """
         @summary: Determine if the instruction should write back to the register file
-        '''
+        """
         if Globals.DEBUG and "nop" != self.instr:
             print "\tDetermining if instruction modifies register file:"
             print "\t\tInstr: " + self.instr + "\n\t\tDest operand: " + self.ops[0].op
@@ -272,9 +272,9 @@ class FlexibleOp:
             return Globals.basicRAM[int(self.op)]
 
     def setVal (self, value):
-        '''
+        """
         @summary: Decode the address of an operand and write 'value' to that address
-        '''
+        """
 
         if None == value:
             raise Exception("Attempting to write 'None' as destination value")
